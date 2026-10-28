@@ -115,3 +115,9 @@ class AutoRunInputTests(BoyTestCase):
         self.now[0] = 111.0
         self.boy.update(0.01)
         self.assertEqual(self.boy.state.name, 'Idle')
+
+    def test_normal_run_stays_inside_canvas(self):
+        self.boy.x = 790
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_RIGHT))
+        self.boy.update(1.0)
+        self.assertLessEqual(self.boy.x + 38 * self.boy.scale, 800)
