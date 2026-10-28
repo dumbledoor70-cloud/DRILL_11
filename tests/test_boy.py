@@ -79,3 +79,12 @@ class AutoRunBoundaryTests(BoyTestCase):
         self.boy.update(0.1)
         self.assertEqual(self.boy.state.direction, -1)
         self.assertLessEqual(self.boy.x + 38 * self.boy.scale, 800.01)
+
+    def test_left_edge_reverses_auto_run_direction(self):
+        self.boy.facing = -1
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.boy.x = 45
+        self.now[0] = 101.0
+        self.boy.update(0.1)
+        self.assertEqual(self.boy.state.direction, 1)
+        self.assertGreaterEqual(self.boy.x - 38 * self.boy.scale, -0.01)
