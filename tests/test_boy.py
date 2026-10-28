@@ -61,3 +61,12 @@ class AutoRunTimingTests(BoyTestCase):
         self.boy.update(0.01)
         self.assertEqual(self.boy.state.name, 'Idle')
         self.assertEqual(self.boy.scale, 1.0)
+
+class AutoRunGrowthTests(BoyTestCase):
+    def test_speed_and_scale_grow_during_auto_run(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        start_x = self.boy.x
+        self.now[0] = 102.5
+        self.boy.update(0.1)
+        self.assertAlmostEqual(self.boy.scale, 1.25)
+        self.assertAlmostEqual(self.boy.x - start_x, 25.0)
