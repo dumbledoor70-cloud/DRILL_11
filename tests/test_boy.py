@@ -50,3 +50,14 @@ class IdleAndRunTests(BoyTestCase):
         self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_RIGHT))
         self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
         self.assertEqual(self.boy.state.name, 'Run')
+
+class AutoRunTimingTests(BoyTestCase):
+    def test_auto_run_expires_after_five_seconds_and_resets_scale(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.now[0] = 104.9
+        self.boy.update(0.01)
+        self.assertEqual(self.boy.state.name, 'AutoRun')
+        self.now[0] = 105.0
+        self.boy.update(0.01)
+        self.assertEqual(self.boy.state.name, 'Idle')
+        self.assertEqual(self.boy.scale, 1.0)
