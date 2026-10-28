@@ -70,3 +70,12 @@ class AutoRunGrowthTests(BoyTestCase):
         self.boy.update(0.1)
         self.assertAlmostEqual(self.boy.scale, 1.25)
         self.assertAlmostEqual(self.boy.x - start_x, 25.0)
+
+class AutoRunBoundaryTests(BoyTestCase):
+    def test_right_edge_reverses_auto_run_direction(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.boy.x = 755
+        self.now[0] = 101.0
+        self.boy.update(0.1)
+        self.assertEqual(self.boy.state.direction, -1)
+        self.assertLessEqual(self.boy.x + 38 * self.boy.scale, 800.01)
