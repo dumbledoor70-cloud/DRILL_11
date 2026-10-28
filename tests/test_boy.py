@@ -140,3 +140,12 @@ class RenderingBehaviorTests(BoyTestCase):
         self.assertEqual(self.boy.direction_from_keys(), 1)
         self.boy.update(0.1)
         self.assertGreater(self.boy.x, 400)
+
+class AutoRunDirectionTests(BoyTestCase):
+    def test_auto_run_starts_in_the_current_facing_direction(self):
+        self.boy.facing = -1
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.assertEqual(self.boy.state.direction, -1)
+        start_x = self.boy.x
+        self.boy.update(0.1)
+        self.assertLess(self.boy.x, start_x)
