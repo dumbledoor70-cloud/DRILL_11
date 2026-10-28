@@ -133,3 +133,10 @@ class RenderingBehaviorTests(BoyTestCase):
         self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_LEFT))
         self.boy.draw()
         self.assertEqual(self.image.last_draw[5], 'h')
+
+    def test_right_direction_takes_priority_when_both_arrows_are_held(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_LEFT))
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_RIGHT))
+        self.assertEqual(self.boy.direction_from_keys(), 1)
+        self.boy.update(0.1)
+        self.assertGreater(self.boy.x, 400)
