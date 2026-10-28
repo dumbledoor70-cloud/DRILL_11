@@ -23,6 +23,7 @@ class RunState:
 
     def enter(self, boy):
         boy.frame = 0
+        boy.scale = 1.0
         boy._face_input_direction()
 
     def handle_event(self, boy, event):

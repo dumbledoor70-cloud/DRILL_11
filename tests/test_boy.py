@@ -88,3 +88,16 @@ class AutoRunBoundaryTests(BoyTestCase):
         self.boy.update(0.1)
         self.assertEqual(self.boy.state.direction, 1)
         self.assertGreaterEqual(self.boy.x - 38 * self.boy.scale, -0.01)
+
+class AutoRunInputTests(BoyTestCase):
+    def test_direction_key_cancels_auto_run_into_normal_size_run(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.now[0] = 102.5
+        self.boy.update(0.01)
+        self.assertGreater(self.boy.scale, 1.0)
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_LEFT))
+        self.assertEqual(self.boy.state.name, 'Run')
+        self.assertEqual(self.boy.scale, 1.0)
+        start_x = self.boy.x
+        self.boy.update(0.1)
+        self.assertLess(self.boy.x, start_x)
