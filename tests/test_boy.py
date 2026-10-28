@@ -149,3 +149,10 @@ class AutoRunDirectionTests(BoyTestCase):
         start_x = self.boy.x
         self.boy.update(0.1)
         self.assertLess(self.boy.x, start_x)
+
+    def test_auto_run_starts_faster_than_normal_run(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        start_x = self.boy.x
+        self.boy.update(0.1)
+        self.assertAlmostEqual(self.boy.x - start_x, 18.0)
+        self.assertGreater(180.0, self.boy.run_speed)
