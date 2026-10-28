@@ -121,3 +121,15 @@ class AutoRunInputTests(BoyTestCase):
         self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_RIGHT))
         self.boy.update(1.0)
         self.assertLessEqual(self.boy.x + 38 * self.boy.scale, 800)
+
+class RenderingBehaviorTests(BoyTestCase):
+    def test_run_animation_advances_on_elapsed_frame_time(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_RIGHT))
+        self.assertEqual(self.boy.frame, 0)
+        self.boy.update(0.09)
+        self.assertEqual(self.boy.frame, 1)
+
+    def test_running_left_flips_sprite_horizontally(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_LEFT))
+        self.boy.draw()
+        self.assertEqual(self.image.last_draw[5], 'h')
