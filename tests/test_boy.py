@@ -156,3 +156,16 @@ class AutoRunDirectionTests(BoyTestCase):
         self.boy.update(0.1)
         self.assertAlmostEqual(self.boy.x - start_x, 18.0)
         self.assertGreater(180.0, self.boy.run_speed)
+
+class GroundAlignmentTests(BoyTestCase):
+    def test_idle_character_feet_align_with_grass_surface(self):
+        self.assertEqual(self.boy.y - self.boy.foot_offset * self.boy.scale, self.boy.ground_y)
+
+    def test_autorun_growth_keeps_feet_on_the_ground(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.now[0] = 102.5
+        self.boy.update(0.01)
+        self.assertAlmostEqual(
+            self.boy.y - self.boy.foot_offset * self.boy.scale,
+            self.boy.ground_y,
+        )

@@ -5,7 +5,7 @@ class IdleState:
     name = 'Idle'
 
     def enter(self, boy):
-        boy.scale = 1.0
+        boy._set_scale(1.0)
         boy.frame = 3
 
     def handle_event(self, boy, event):
@@ -23,7 +23,7 @@ class RunState:
 
     def enter(self, boy):
         boy.frame = 0
-        boy.scale = 1.0
+        boy._set_scale(1.0)
         boy._face_input_direction()
 
     def handle_event(self, boy, event):
@@ -54,7 +54,7 @@ class AutoRunState:
         self.started_at = get_time()
         self.direction = boy.facing
         boy.frame = 0
-        boy.scale = 1.0
+        boy._set_scale(1.0)
 
     def handle_event(self, boy, event):
         if event.type == SDL_KEYDOWN and event.key in (SDLK_LEFT, SDLK_RIGHT):
@@ -69,7 +69,7 @@ class AutoRunState:
 
         progress = elapsed / self.duration
         speed = self.start_speed + (self.end_speed - self.start_speed) * progress
-        boy.scale = 1.0 + (self.end_scale - 1.0) * progress
+        boy._set_scale(1.0 + (self.end_scale - 1.0) * progress)
         boy.facing = self.direction
         boy.x += self.direction * speed * dt
 
@@ -92,7 +92,8 @@ class Boy:
         self.canvas_width = canvas_width
         self.ground_y = ground_y
         self.x = canvas_width / 2
-        self.y = ground_y + 50
+        self.foot_offset = 36
+        self.y = ground_y + self.foot_offset
         self.run_speed = 150.0
         self.facing = 1
         self.frame = 3
@@ -139,6 +140,10 @@ class Boy:
     def _keep_on_screen(self):
         half_width = 38 * self.scale
         self.x = max(half_width, min(self.canvas_width - half_width, self.x))
+
+    def _set_scale(self, scale):
+        self.scale = scale
+        self.y = self.ground_y + self.foot_offset * scale
 
     def _animate(self, dt):
         self.frame_elapsed += dt

@@ -35,7 +35,7 @@ def main():
     if not pico2d_core.renderer:
         raise RuntimeError('Pico2D could not create an SDL renderer')
     grass = Grass()
-    boy = Boy(canvas_width=800, ground_y=62)
+    boy = Boy(canvas_width=800, ground_y=56)
     running = True
     previous_time = get_time()
 
