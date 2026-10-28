@@ -101,3 +101,17 @@ class AutoRunInputTests(BoyTestCase):
         start_x = self.boy.x
         self.boy.update(0.1)
         self.assertLess(self.boy.x, start_x)
+
+    def test_each_auto_run_activation_gets_a_fresh_five_second_timer(self):
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.now[0] = 105.0
+        self.boy.update(0.01)
+        self.assertEqual(self.boy.state.name, 'Idle')
+        self.now[0] = 106.0
+        self.boy.handle_event(self.event(SDL_KEYDOWN, SDLK_a))
+        self.now[0] = 110.9
+        self.boy.update(0.01)
+        self.assertEqual(self.boy.state.name, 'AutoRun')
+        self.now[0] = 111.0
+        self.boy.update(0.01)
+        self.assertEqual(self.boy.state.name, 'Idle')
